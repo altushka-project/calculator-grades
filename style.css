@@ -1,4 +1,4 @@
-/* ===== ОБЩИЙ СТИЛЬ ===== */
+/* ===== БАЗА ===== */
 * {
     margin: 0;
     padding: 0;
@@ -6,18 +6,57 @@
 }
 
 body {
-    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-    background: #f0f7ff;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #fbf8f0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     padding: 40px 20px;
-    color: #1a2a3a;
+    color: #1a1a1a;
+    position: relative;
+    overflow-x: hidden;
 }
 
+/* ===== РАЗМЫТЫЕ ЗОЛОТИСТЫЕ ПЯТНА ===== */
+.blur-circle {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.circle-1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(201, 168, 76, 0.25);
+    top: -150px;
+    left: -100px;
+}
+
+.circle-2 {
+    width: 600px;
+    height: 600px;
+    background: rgba(245, 230, 184, 0.4);
+    bottom: -200px;
+    right: -150px;
+}
+
+.circle-3 {
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 215, 120, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ===== КОНТЕЙНЕР ===== */
 .container {
     max-width: 1200px;
     width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 /* ===== ШАПКА ===== */
@@ -29,46 +68,46 @@ body {
     font-size: 42px;
     font-weight: 300;
     letter-spacing: 2px;
-    color: #1a2a3a;
+    color: #1a1a1a;
 }
 
 .header h1 span {
     font-weight: 700;
-    color: #2b7be0;
+    color: #c9a84c;
 }
 
 .header .subtitle {
     font-size: 14px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: #7a9bb8;
+    color: #8a7a5a;
     margin-top: -5px;
 }
 
 .motto {
     margin-top: 20px;
-    border-left: 4px solid #2b7be0;
+    border-left: 4px solid #c9a84c;
     padding-left: 20px;
 }
 
-.motto p:first-child {
+.motto .motto-label {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 3px;
-    color: #2b7be0;
+    color: #c9a84c;
     text-transform: uppercase;
 }
 
 .motto h2 {
     font-size: 28px;
     font-weight: 400;
-    color: #1a2a3a;
+    color: #1a1a1a;
     margin: 6px 0;
 }
 
 .motto .desc {
     font-size: 15px;
-    color: #5a7d9a;
+    color: #5a4f3a;
     max-width: 500px;
 }
 
@@ -81,116 +120,267 @@ body {
 
 /* ===== ЛЕВАЯ ПАНЕЛЬ ===== */
 .left-panel {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: 24px;
     padding: 30px;
-    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+    box-shadow: 0 8px 40px rgba(201, 168, 76, 0.10);
+    border: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .section-title h3 {
     font-size: 18px;
     font-weight: 600;
-    color: #1a2a3a;
+    color: #1a1a1a;
 }
 
 .section-title span {
     font-size: 13px;
-    color: #7a9bb8;
+    color: #8a7a5a;
 }
 
-/* Список оценок */
+/* ===== ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМОВ ===== */
+.mode-selector {
+    background: #fbf8f0;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border: 1px solid #f0e8d8;
+}
+
+.mode-selector > span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.mode-btn {
+    padding: 8px 18px;
+    border: 2px solid #e8ddd0;
+    border-radius: 20px;
+    background: white;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a7a5a;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.mode-btn:hover {
+    border-color: #c9a84c;
+    color: #c9a84c;
+}
+
+.mode-btn.active {
+    border-color: #c9a84c;
+    background: #c9a84c;
+    color: white;
+}
+
+.mode-note {
+    font-size: 12px;
+    color: #8a7a5a;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* ===== ЛЕГЕНДА ВЕСОВ ===== */
+.weight-legend {
+    background: #fbf8f0;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border: 1px solid #f0e8d8;
+}
+
+.weight-legend h4 {
+    font-size: 13px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+    font-size: 13px;
+    color: #3a3020;
+}
+
+.legend-grid span b {
+    color: #c9a84c;
+    margin-right: 4px;
+}
+
+.legend-note {
+    font-size: 12px;
+    color: #8a7a5a;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* ===== СПИСОК ОЦЕНОК ===== */
 .grades-list {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin: 20px 0;
+    margin: 16px 0;
     min-height: 50px;
 }
 
 .grade-item {
-    background: #f0f7ff;
-    border-radius: 14px;
+    background: #ffffff;
+    border-radius: 16px;
     padding: 10px 16px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border: 1px solid #e0edf5;
+    border: 1px solid #f0e8d8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     transition: 0.2s;
 }
 
 .grade-item:hover {
-    border-color: #2b7be0;
+    border-color: #c9a84c;
+    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.15);
 }
 
-.grade-item input[type="number"] {
-    width: 44px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    font-weight: 600;
+.grade-item .grade-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    min-width: 30px;
     text-align: center;
-    color: #1a2a3a;
-    outline: none;
 }
 
-.grade-item input[type="number"]::-webkit-inner-spin-button {
-    opacity: 0.5;
+.grade-item .grade-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.grade-item .weight-input {
-    width: 36px;
+.grade-item .grade-controls button {
+    background: #f5f0e6;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 700;
+    color: #8a7a5a;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grade-item .grade-controls button:hover {
+    background: #c9a84c;
+    color: white;
+}
+
+.grade-item .weight-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+    padding-left: 10px;
+    border-left: 1px solid #f0e8d8;
+}
+
+.grade-item .weight-control span {
+    font-size: 12px;
+    color: #8a7a5a;
+    font-weight: 500;
+}
+
+.grade-item .weight-control button {
+    background: #f5f0e6;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
     font-size: 13px;
-    color: #5a7d9a;
-    border-left: 1px solid #d0e0ec;
-    padding-left: 8px;
+    font-weight: 700;
+    color: #8a7a5a;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grade-item .weight-control button:hover {
+    background: #c9a84c;
+    color: white;
+}
+
+.grade-item .weight-control .weight-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    min-width: 18px;
+    text-align: center;
 }
 
 .grade-item .delete-btn {
     background: none;
     border: none;
-    color: #c0392b;
-    font-size: 18px;
+    color: #ccb69b;
+    font-size: 16px;
     cursor: pointer;
-    padding: 0 4px;
-    opacity: 0.5;
     transition: 0.2s;
+    padding: 0 4px;
+    margin-left: 4px;
 }
 
 .grade-item .delete-btn:hover {
-    opacity: 1;
+    color: #c0392b;
 }
 
-/* Кнопка добавления */
+/* ===== КНОПКА ДОБАВЛЕНИЯ ===== */
 .add-btn {
-    background: #eaf3fa;
+    background: #c9a84c;
     border: none;
-    padding: 12px 24px;
+    padding: 14px 28px;
     border-radius: 16px;
     font-size: 15px;
     font-weight: 600;
-    color: #2b7be0;
+    color: white;
     cursor: pointer;
     transition: 0.2s;
     margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.25);
 }
 
 .add-btn:hover {
-    background: #d4e4f2;
+    background: #b8962e;
     transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.35);
 }
 
-/* Шкала оценивания */
+/* ===== ШКАЛА ===== */
 .scale-selector {
-    background: #f8faff;
+    background: #fbf8f0;
     border-radius: 16px;
     padding: 18px 20px;
     margin-bottom: 20px;
+    border: 1px solid #f0e8d8;
 }
 
 .scale-selector > span {
     font-size: 14px;
     font-weight: 600;
-    color: #1a2a3a;
+    color: #1a1a1a;
     display: block;
     margin-bottom: 10px;
 }
@@ -202,50 +392,51 @@ body {
 
 .scale-btn {
     padding: 6px 18px;
-    border: 2px solid #d0e0ec;
+    border: 2px solid #e8ddd0;
     border-radius: 20px;
     background: white;
     font-size: 13px;
     font-weight: 500;
-    color: #5a7d9a;
+    color: #8a7a5a;
     cursor: pointer;
     transition: 0.2s;
 }
 
 .scale-btn:hover {
-    border-color: #2b7be0;
-    color: #2b7be0;
+    border-color: #c9a84c;
+    color: #c9a84c;
 }
 
 .scale-btn.active {
-    border-color: #2b7be0;
-    background: #2b7be0;
+    border-color: #c9a84c;
+    background: #c9a84c;
     color: white;
 }
 
 .scale-note {
     font-size: 12px;
-    color: #a0bdd6;
+    color: #b0a088;
     margin-top: 8px;
 }
 
-/* Как работает расчёт */
+/* ===== КАК РАБОТАЕТ ===== */
 .how-it-works {
-    background: #f8faff;
+    background: #fbf8f0;
     border-radius: 16px;
     padding: 18px 20px;
+    border: 1px solid #f0e8d8;
 }
 
 .how-it-works h4 {
     font-size: 13px;
     font-weight: 600;
-    color: #1a2a3a;
+    color: #1a1a1a;
     margin-bottom: 6px;
 }
 
 .how-it-works p {
     font-size: 13px;
-    color: #5a7d9a;
+    color: #5a4f3a;
     line-height: 1.5;
 }
 
@@ -256,9 +447,9 @@ body {
     border-radius: 10px;
     font-size: 14px;
     font-weight: 500;
-    color: #2b7be0;
+    color: #c9a84c;
     text-align: center;
-    border: 1px dashed #c5dff0;
+    border: 1px dashed #e8ddd0;
 }
 
 /* ===== ПРАВАЯ ПАНЕЛЬ ===== */
@@ -268,18 +459,20 @@ body {
     gap: 20px;
 }
 
-/* Спецификация */
+/* ===== СПЕЦИФИКАЦИЯ ===== */
 .specification {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: 24px;
     padding: 24px 28px;
-    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+    box-shadow: 0 8px 40px rgba(201, 168, 76, 0.10);
+    border: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .specification h3 {
     font-size: 14px;
     letter-spacing: 2px;
-    color: #7a9bb8;
+    color: #8a7a5a;
     margin-bottom: 16px;
 }
 
@@ -292,72 +485,76 @@ body {
 
 .spec-label {
     font-size: 13px;
-    color: #1a2a3a;
-    min-width: 140px;
+    color: #1a1a1a;
+    min-width: 120px;
 }
 
 .spec-value {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
-    color: #2b7be0;
+    color: #c9a84c;
     margin-left: auto;
 }
 
 .spec-bar {
     flex: 1;
     height: 6px;
-    background: #eaf3fa;
+    background: #f0e8d8;
     border-radius: 4px;
     overflow: hidden;
 }
 
 .spec-fill {
     height: 100%;
-    background: linear-gradient(90deg, #4d9eff, #2b7be0);
+    background: linear-gradient(90deg, #f5e6b8, #c9a84c);
     border-radius: 4px;
-    transition: width 0.5s;
+    transition: width 0.8s ease;
 }
 
-/* Текущий результат */
+/* ===== ТЕКУЩИЙ РЕЗУЛЬТАТ ===== */
 .current-result {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: 24px;
     padding: 18px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+    box-shadow: 0 8px 40px rgba(201, 168, 76, 0.10);
+    border: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .current-result span {
     font-size: 14px;
-    color: #7a9bb8;
+    color: #8a7a5a;
 }
 
 .current-result strong {
     font-size: 20px;
-    color: #1a2a3a;
+    color: #1a1a1a;
 }
 
-/* Следующий шаг (прогноз) */
+/* ===== СЛЕДУЮЩИЙ ШАГ ===== */
 .next-step {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: 24px;
     padding: 24px 28px;
-    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+    box-shadow: 0 8px 40px rgba(201, 168, 76, 0.10);
+    border: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .next-step h4 {
     font-size: 14px;
     letter-spacing: 2px;
-    color: #7a9bb8;
+    color: #8a7a5a;
     margin-bottom: 4px;
 }
 
 .next-step > p {
     font-size: 18px;
     font-weight: 600;
-    color: #1a2a3a;
+    color: #1a1a1a;
     margin-bottom: 16px;
 }
 
@@ -371,59 +568,65 @@ body {
 .goal-section label {
     font-size: 14px;
     font-weight: 500;
-    color: #1a2a3a;
+    color: #1a1a1a;
 }
 
 .goal-section select {
     padding: 8px 16px;
-    border: 2px solid #d0e0ec;
+    border: 2px solid #e8ddd0;
     border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
-    color: #1a2a3a;
+    color: #1a1a1a;
     background: white;
     outline: none;
     cursor: pointer;
 }
 
 .goal-section select:focus {
-    border-color: #2b7be0;
+    border-color: #c9a84c;
 }
 
 .forecast-result {
-    background: #f0f7ff;
+    background: #fbf8f0;
     padding: 14px 18px;
     border-radius: 14px;
     margin-bottom: 16px;
+    border: 1px solid #f0e8d8;
 }
 
 .forecast-result p {
     font-size: 14px;
-    color: #1a2a3a;
+    color: #1a1a1a;
 }
 
 .forecast-result strong {
-    color: #2b7be0;
+    color: #c9a84c;
 }
 
-/* Цитаты на японском */
+/* ===== ЦИТАТЫ ===== */
 .quote {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #eaf3fa;
+    border-top: 1px solid #f0e8d8;
 }
 
 .quote p {
-    font-size: 14px;
+    font-size: 15px;
     font-style: italic;
-    color: #5a7d9a;
+    color: #1a1a1a;
     line-height: 1.6;
     font-weight: 300;
 }
 
-.quote p:first-child {
-    font-size: 15px;
-    color: #2b7be0;
+.quote .translation {
+    font-size: 13px;
+    color: #8a7a5a;
+    font-style: italic;
+    margin-top: -4px;
+    margin-bottom: 10px;
+    padding-left: 12px;
+    border-left: 2px solid #c9a84c;
 }
 
 /* ===== ФУТЕР ===== */
@@ -431,18 +634,26 @@ body {
     margin-top: 40px;
     text-align: center;
     padding-top: 20px;
-    border-top: 1px solid #e0edf5;
+    border-top: 1px solid #f0e8d8;
 }
 
 .footer p {
     font-size: 13px;
-    color: #7a9bb8;
+    color: #8a7a5a;
     margin: 3px 0;
+}
+
+.footer .year {
+    font-size: 11px;
+    color: #b0a088;
 }
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 900px) {
     .main-grid {
+        grid-template-columns: 1fr;
+    }
+    .legend-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -463,18 +674,11 @@ body {
     .spec-label {
         min-width: 100%;
     }
-    .grade-item input[type="number"] {
-        width: 36px;
+    .grade-item {
+        flex-wrap: wrap;
+        justify-content: center;
     }
-}
-
-/* ===== ПЕРЕВОД ЦИТАТ ===== */
-.quote .translation {
-    font-size: 13px;
-    color: #7a9bb8;
-    font-style: italic;
-    margin-top: -8px;
-    margin-bottom: 12px;
-    padding-left: 12px;
-    border-left: 2px solid #c5dff0;
+    .mode-buttons {
+        flex-direction: column;
+    }
 }
