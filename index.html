@@ -1,4 +1,88 @@
-<div class="spec-bar"><div class="spec-fill" style="width: 70%;"></div></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценка+</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- ШАПКА -->
+        <div class="header">
+            <h1>Оценка <span>+</span></h1>
+            <p class="subtitle">личный калькулятор</p>
+            <div class="motto">
+                <p>СПОКОЙНО К ОТЛИЧНОЙ ОЦЕНКЕ</p>
+                <h2>Твоя следующая оценка — по плану.</h2>
+                <p class="desc">Добавь оценки за четверть, выбери цель — и увидишь честный маршрут до нужного результата.</p>
+            </div>
+        </div>
+
+        <!-- ОСНОВНОЙ БЛОК: оценки + результат -->
+        <div class="main-grid">
+            <!-- Левая часть: ввод оценок -->
+            <div class="left-panel">
+                <div class="section-title">
+                    <h3>Твои оценки</h3>
+                    <span>Введите все отметки за текущую четверть</span>
+                </div>
+
+                <!-- Список оценок -->
+                <div class="grades-list" id="gradesList">
+                    <!-- Сюда будут добавляться оценки -->
+                </div>
+
+                <!-- Кнопка добавления -->
+                <button class="add-btn" onclick="addGrade()">+ Добавить</button>
+
+                <!-- Шкала оценивания -->
+                <div class="scale-selector">
+                    <span>Шкала оценивания</span>
+                    <div class="scale-buttons">
+                        <button class="scale-btn active" onclick="setScale('5')">5-балльная</button>
+                        <button class="scale-btn" onclick="setScale('10')">10-балльная</button>
+                    </div>
+                    <p class="scale-note">можно изменить в любой момент</p>
+                </div>
+
+                <!-- Как работает расчет -->
+                <div class="how-it-works">
+                    <h4>Как работает расчёт</h4>
+                    <p>Калькулятор находит среднее арифметическое: складывает все оценки и делит сумму на их количество. Для прогноза он добавляет будущие максимальные оценки и проверяет, сколько их нужно, чтобы среднее стало не ниже цели.</p>
+                    <div class="formula">сумма текущих + будущие оценки ÷ количество оценок</div>
+                </div>
+            </div>
+
+            <!-- Правая панель: статистика и прогноз -->
+            <div class="right-panel">
+                <!-- Спецификация -->
+                <div class="specification">
+                    <h3>СПЕЦИФИКАЦИЯ</h3>
+                    <div class="spec-item">
+                        <span class="spec-label">Средний балл</span>
+                        <span class="spec-value" id="currentAverage">0,0</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Профессиональная</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 75%;"></div></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Интеллектуальная</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Умение работать с цифровыми данными</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Умение находить ошибки</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 50%;"></div></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Умение решать задачи на основе данных</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 70%;"></div></div>
                     </div>
                 </div>
 
@@ -32,10 +116,12 @@
                         <p>Чтобы получить <strong id="goalDisplay">4</strong>, нужно получить ещё <strong id="neededGrades">0</strong> оценок на максимальный балл.</p>
                     </div>
 
-                    <div class="quote">
-                        <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
-                        <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
-                    </div>
+                   <div class="quote">
+    <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
+    <p class="translation">— Мечты не убегают, убегаем мы сами</p>
+    <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
+    <p class="translation">— Успех рождается там, где встречаются подготовка и удача</p>
+</div>
                 </div>
             </div>
         </div>
