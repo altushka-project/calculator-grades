@@ -3,159 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оценка + Золото</title>
+    <title>Оценка+</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Эффект размытых пятен -->
-    <div class="blur-circle circle-1"></div>
-    <div class="blur-circle circle-2"></div>
-    <div class="blur-circle circle-3"></div>
 
-    <div class="container">
-        <!-- ШАПКА -->
-        <div class="header">
-            <h1>Оценка <span>+</span></h1>
-            <p class="subtitle">личный калькулятор</p>
-            <div class="motto">
-                <p class="motto-label">СПОКОЙНО К ОТЛИЧНОЙ ОЦЕНКЕ</p>
-                <h2>Твоя следующая оценка — по плану.</h2>
-                <p class="desc">Добавь оценки за четверть, выбери цель — и увидишь честный маршрут до нужного результата.</p>
-            </div>
-        </div>
+<!-- Золотые молнии -->
+<div class="lightning l1"></div>
+<div class="lightning l2"></div>
+<div class="lightning l3"></div>
 
-        <!-- ОСНОВНАЯ СЕТКА -->
-        <div class="main-grid">
-            <!-- Левая панель: Оценки -->
-            <div class="left-panel">
-                <div class="section-title">
-                    <h3>📋 Твои оценки</h3>
-                    <span>Добавь отметки и укажи их важность (вес)</span>
-                </div>
+<div class="container">
 
-                <!-- ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМОВ РАСЧЕТА -->
-                <div class="mode-selector">
-                    <span>Режим расчета:</span>
-                    <div class="mode-buttons">
-                        <button class="mode-btn active" onclick="setMode('average')" id="modeAvg">📊 Средний балл</button>
-                        <button class="mode-btn" onclick="setMode('weighted')" id="modeWeight">⚖️ Вес оценок</button>
-                    </div>
-                    <p class="mode-note" id="modeDescription">Считает сумму всех оценок, деленную на их количество (без весов).</p>
-                </div>
-
-                <!-- ПОДСКАЗКА ПО ВЕСАМ (появляется только в режиме "Вес оценок") -->
-                <div class="weight-legend" id="weightLegend" style="display: none;">
-                    <h4>📌 Что означает вес:</h4>
-                    <div class="legend-grid">
-                        <span><b>1</b> — Ответ у доски, домашняя работа</span>
-                        <span><b>2</b> — Самостоятельная работа</span>
-                        <span><b>3</b> — Лабораторная работа, практикум</span>
-                        <span><b>4</b> — Контрольная работа (четвертная)</span>
-                        <span><b>5</b> — Итоговая контрольная, ОГЭ/ВПР</span>
-                    </div>
-                    <p class="legend-note">Чем выше вес, тем сильнее оценка влияет на средний балл.</p>
-                </div>
-
-                <!-- Список оценок -->
-                <div class="grades-list" id="gradesList">
-                    <!-- Сюда будут добавляться оценки -->
-                </div>
-
-                <!-- Кнопка добавления -->
-                <button class="add-btn" onclick="addGrade()">+ Добавить оценку</button>
-
-                <!-- Шкала оценивания -->
-                <div class="scale-selector">
-                    <span>⚖️ Шкала оценивания</span>
-                    <div class="scale-buttons">
-                        <button class="scale-btn active" onclick="setScale('5')">5-балльная</button>
-                        <button class="scale-btn" onclick="setScale('10')">10-балльная</button>
-                    </div>
-                    <p class="scale-note">можно изменить в любой момент</p>
-                </div>
-
-                <!-- Как работает расчёт -->
-                <div class="how-it-works">
-                    <h4>📖 Как работает расчёт</h4>
-                    <div id="formulaText">
-                        <p>Складываем все оценки и делим на их количество.</p>
-                        <div class="formula">(оценка + оценка) ÷ количество</div>
-                    </div>
-                    </div>
-            </div>
-
-            <!-- Правая панель: Статистика и прогноз -->
-            <div class="right-panel">
-                <!-- Спецификация -->
-                <div class="specification">
-                    <h3>📊 СПЕЦИФИКАЦИЯ</h3>
-                    <div class="spec-item">
-                        <span class="spec-label">Средний балл</span>
-                        <span class="spec-value" id="currentAverage">0,0</span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Успеваемость</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Стабильность</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Потенциал</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
-                    </div>
-                </div>
-
-                <!-- Текущий результат -->
-                <div class="current-result">
-                    <span>📌 Текущий результат</span>
-                    <strong id="gradeCount">0 оценок</strong>
-                </div>
-
-                <!-- Следующий шаг (прогноз) -->
-                <div class="next-step">
-                    <h4>🎯 СЛЕДУЮЩИЙ ШАГ</h4>
-                    <p>Как прийти к цели?</p>
-
-                    <div class="goal-section">
-                        <label>Моя цель</label>
-                        <select id="goalSelect" onchange="calculateForecast()">
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4" selected>4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </div>
-
-                    <div class="forecast-result" id="forecastResult">
-                        <p>Чтобы получить <strong id="goalDisplay">4</strong>, нужно получить ещё <strong id="neededGrades">0</strong> оценок на максимальный балл.</p>
-                    </div>
-
-                    <!-- Цитаты -->
-                    <div class="quote">
-                        <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
-                        <p class="translation">— Мечты не убегают, убегаем мы сами</p>
-                        <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
-                        <p class="translation">— Успех рождается там, где встречаются подготовка и удача</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ФУТЕР -->
-        <div class="footer">
-            <p>Разработано ученицей 8 класса</p>
-            <p class="year">© 2026</p>
+    <!-- ШАПКА -->
+    <div class="header">
+        <h1>Оценка <span>+</span></h1>
+        <p class="subtitle">личный калькулятор</p>
+        <div class="motto">
+            <p class="motto-label">⚡ СПОКОЙНО К ОТЛИЧНОЙ ОЦЕНКЕ</p>
+            <h2>Твоя следующая оценка — по плану.</h2>
+            <p class="desc">Добавь оценки за четверть, выбери цель — и увидишь честный маршрут до нужного результата.</p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- ===== 1. ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР ===== -->
+    <div class="section-title-block">
+        <h2>📊 ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР</h2>
+        <p>Учитывает важность оценок (вес). Подходит для школ с новой системой.</p>
+    </div>
+
+    <div class="main-grid">
+        <div class="left-panel">
+            <div class="section-title">
+                <h3>📋 Твои оценки</h3>
+                <span>Добавь отметки и укажи их важность</span>
+            </div>
+
+            <!-- ПОДСКАЗКА ПО ВЕСАМ -->
+            <div class="weight-legend">
+                <h4>⚡ Что означает вес:</h4>
+                <div class="legend-grid">
+                    <span><b>1</b> — Ответ у доски, домашняя работа</span>
+                    <span><b>2</b> — Самостоятельная работа</span>
+                    <span><b>3</b> — Лабораторная работа, практикум</span>
+                    <span><b>4</b> — Контрольная работа</span>
+                    <span><b>5</b> — Итоговая контрольная, ОГЭ/ВПР</span>
+                </div>
+                <p class="legend-note">Чем выше вес, тем сильнее оценка влияет на средний балл.</p>
+            </div>
+
+            <div class="grades-list" id="gradesList"></div>
+
+            <button class="add-btn" onclick="addGrade()">+ Добавить оценку</button>
+
+            <div class="scale-selector">
+                <span>⚖️ Шкала оценивания</span>
+                <div class="scale-buttons">
+                    <button class="scale-btn active" onclick="setScale('5')">5-балльная</button>
+                    <button class="scale-btn" onclick="setScale('10')">10-балльная</button>
+                </div>
+                <p class="scale-note">можно изменить в любой момент</p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="specification">
+                <h3>📊 СПЕЦИФИКАЦИЯ</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Средний балл (с весом)</span>
+                    <span class="spec-value" id="weightedAverage">0,0</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Успеваемость</span>
+                    <div class="spec-bar"><div class="spec-fill" style="width:0%"></div></div>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Стабильность</span>
+                    <div class="spec-bar"><div class="spec-fill" style="width:0%"></div></div>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Потенциал</span>
+                    <div class="spec-bar"><div class="spec-fill" style="width:0%"></div></div>
+                </div>
+            </div>
+
+            <div class="current-result">
+                <span>📌 Текущий результат</span>
+                <strong id="gradeCount">0 оценок</strong>
+            </div>
+
+            <div class="next-step">
+                <h4>🎯 СЛЕДУЮЩИЙ ШАГ</h4>
+                <p>Как прийти к цели?</p>
+                <div class="goal-section">
+                    <label>Моя цель</label>
+                    <select id="goalSelect" onchange="calculateForecast()">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4" selected>4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="forecast-result" id="forecastResult">
+                    <p>Чтобы получить <strong id="goalDisplay">4</strong>, нужно получить ещё <strong id="neededGrades">0</strong> оценок на максимальный балл.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 2. ПРОСТОЙ КАЛЬКУЛЯТОР ===== -->
+    <div class="section-title-block simple-section">
+        <h2>📈 ПРОСТОЙ КАЛЬКУЛЯТОР</h2>
+        <p>Считает обычный средний балл. Подходит для школ, где вес оценок НЕ используется.</p>
+    </div>
+
+    <div class="simple-calculator">
+        <div class="simple-input-area">
+            <label>Введите оценки через запятую</label>
+            <input type="text" id="simpleInput" placeholder="4, 5, 3, 4, 5">
+            <button class="add-btn" onclick="calcSimple()">Рассчитать средний</button>
+            <button class="clear-btn" onclick="clearSimple()">Очистить</button>
+        </div>
+        <div class="simple-result" id="simpleResult">
+            <span>Средний балл: <strong id="simpleAverage">—</strong></span>
+            <span>Количество оценок: <strong id="simpleCount">0</strong></span>
+        </div>
+    </div>
+
+    <!-- ===== ЦИТАТЫ ===== -->
+    <div class="quote-section">
+        <div class="quote">
+            <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
+            <p class="translation">— Мечты не убегают, убегаем мы сами</p>
+            <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
+            <p class="translation">— Успех рождается там, где встречаются подготовка и удача</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Разработано ученицей 8 класса</p>
+        <p class="year">© 2026</p>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
