@@ -47,7 +47,7 @@ function changeGrade(btn, delta) {
 function changeWeight(btn, delta) {
     const item = btn.closest('.grade-item');
     let current = parseInt(item.dataset.weight) || 1;
-    let newWeight = Math.min(Math.max(current + delta, 1), 10);
+    let newWeight = Math.min(Math.max(current + delta, 1), 5);
     item.dataset.weight = newWeight;
     item.querySelector('.weight-value').textContent = newWeight;
     updateWeightedStats();
@@ -69,100 +69,6 @@ function updateWeightedStats() {
         if (!isNaN(val) && val > 0) grades.push({ value: val, weight });
     });
 
-    const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
-    const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
-    let avg = totalWeight > 0 ? weightedSum / totalWeight : 0;
-
-    document.getElementById('weightedAverage').textContent = avg.toFixed(1);
-    document.getElementById('gradeCount').textContent = grades.length + ' оценок';
-
-    const fills = document.querySelectorAll('.spec-fill');
-    const base = Math.min(avg / scale * 100, 100);
-    if (fills.length >= 3) {
-        fills[0].style.width = Math.min(base * 1.0, 100) + '%';
-        fills[1].style.width = Math.min(base * 0.85 + 10, 100) + '%';
-        fills[2].style.width = Math.min(base * 0.7 + 15, 100) + '%';
-    }
-}
-
-function calculateForecast() {
-    const goal = parseInt(document.getElementById('goalSelect').value);
-    document.getElementById('goalDisplay').textContent = goal;
-    if (grades.length === 0) {
-        document.getElementById('neededGrades').textContent = '—';
-        return;
-    }
-
-    const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
-    const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
-    const maxVal = scale;
-
-    let needed = 0, found = false;
-    for (let i = 0; i <= 100; i++) {
-        const newTotal = totalWeight + i;
-        const newSum = weightedSum + i * maxVal;
-        if (newSum / newTotal >= goal - 0.01) {
-            needed = i;
-            found = true;
-            break;
-        }
-    }
-
-    if (!found || needed > 50) {
-        document.getElementById('neededGrades').textContent = 'очень много 😅';
-    } else if (needed === 0) {
-        document.getElementById('neededGrades').textContent = '0 (уже есть!) 🎉';
-    } else {
-        document.getElementById('neededGrades').textContent = needed;
-    }
-}
-
-function setScale(newScale) {
-    scale = parseInt(newScale);
-    document.querySelectorAll('.scale-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.includes(newScale + '-балльная'));
-    });
-    document.querySelectorAll('.grade-item .grade-value').forEach(el => {
-        let val = parseInt(el.textContent);
-        if (val > scale) {
-            el.textContent = scale;
-            el.closest('.grade-item').dataset.value = scale;
-        }
-    });
-    updateWeightedStats();
-    calculateForecast();
-}
-
-// ============================================================
-// ===== 2. ПРОСТОЙ КАЛЬКУЛЯТОР =====
-// ============================================================
-
-function calcSimple() {
-    const input = document.getElementById('simpleInput').value;
-    const arr = input.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x) && x >= 1 && x <= 10);
-    if (arr.length === 0) {
-        document.getElementById('simpleAverage').textContent = '—';
-        document.getElementById('simpleCount').textContent = '0';
-        return;
-    }
-    const sum = arr.reduce((a, b) => a + b, 0);
-    const avg = sum / arr.length;
-    document.getElementById('simpleAverage').textContent = avg.toFixed(2);
-    document.getElementById('simpleCount').textContent = arr.length;
-}
-
-function clearSimple() {
-    document.getElementById('simpleInput').value = '';
-    document.getElementById('simpleAverage').textContent = '—';
-    document.getElementById('simpleCount').textContent = '0';
-}
-
-// ============================================================
-// ===== ЗАГРУЗКА ПРИМЕРОВ =====
-// ============================================================
-
-addGrade(4, 1);
-addGrade(5, 2);
-addGrade(3, 1);
-addGrade(4, 1);
-addGrade(5, 3);
+    // ===== ОФИЦИАЛЬНАЯ ФОРМУЛА =====
+    // Средневзвешенный балл = (сумма произведений оценок на вес) / (сумма весов)
+    const totalWeight = grades.reduce((s, g) => s + g.weight,
