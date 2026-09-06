@@ -42,7 +42,7 @@
                 <span>Добавь отметки и укажи их вес</span>
             </div>
 
-            <!-- ПОДСКАЗКА ПО ВЕСАМ (новая, из положения) -->
+            <!-- ПОДСКАЗКА ПО ВЕСАМ -->
             <div class="weight-legend">
                 <h4>⚡ Вес типовых работ:</h4>
                 <div class="legend-grid compact">
@@ -57,6 +57,7 @@
 
             <div class="grades-list" id="gradesList"></div>
 
+            <!-- КНОПКА ДОБАВЛЕНИЯ -->
             <button class="add-btn" onclick="addGrade()">+ Добавить оценку</button>
 
             <div class="scale-selector">
@@ -81,7 +82,7 @@
                     <span class="spec-value" id="quarterGrade">—</span>
                 </div>
                 
-                <!-- Таблица перевода баллов в оценку -->
+                <!-- Таблица перевода -->
                 <div class="grade-scale-table">
                     <table>
                         <tr><th>Балл</th><th>Оценка</th></tr>
@@ -138,7 +139,7 @@
     <!-- ===== 2. ПРОСТОЙ КАЛЬКУЛЯТОР ===== -->
     <div class="section-title-block simple-section">
         <h2>📈 ПРОСТОЙ КАЛЬКУЛЯТОР</h2>
-        <p>Считает обычный средний балл. Подходит для школ, где вес оценок НЕ используется.</p>
+        <p>Считает обычный средний балл без весов.</p>
     </div>
 
     <div class="simple-calculator">
@@ -171,6 +172,218 @@
 
 </div>
 
+<!-- ПОДКЛЮЧАЕМ ТВОЙ СТАРЫЙ, НО ИСПРАВЛЕННЫЙ JS -->
 <script src="script.js"></script>
+
+<!-- ДОБАВЛЯЕМ НЕДОСТАЮЩИЕ ФУНКЦИИ (чтобы кнопки заработали) -->
+<script>
+    // Эти функции переопределяют старые, чтобы работали новые кнопки
+    function addGrade(value = 5, weight = 1) {
+        const list = document.getElementById('gradesList');
+        if (!list) return;
+        const item = document.createElement('div');
+        item.className = 'grade-item';
+        const id = Date.now() + Math.random();
+
+        item.dataset.value = value;
+        item.dataset.weight = weight;
+
+        item.innerHTML = `
+            <div class="grade-value" id="gv_${id}">${value}</div>
+            <div class="grade-controls">
+                <button onclick="changeGrade(this, -1)">−</button>
+                <button onclick="changeGrade(this, 1)">+</button>
+            </div>
+            <div class="weight-control">
+                <span>Вес:</span>
+                <button onclick="changeWeight(this, -1)">−</button>
+                <span class="weight-value" id="wv_${id}">${weight}</span>
+                <button onclick="changeWeight(this, 1)">+</button>
+            </div>
+            <button class="delete-btn" onclick="removeGrade(this)">✕</button>
+        `;
+
+        list.appendChild(item);
+        updateWeightedStats();
+        calculateForecast();
+    }
+
+    function changeGrade(btn, delta) {
+        const item = btn.closest('.grade-item');
+        if (!item) return;
+        let current = parseInt(item.dataset.value) || 5;
+        let newVal = Math.min(Math.max(current + delta, 1), scale || 5);
+        item.dataset.value = newVal;
+        const display = item.querySelector('.grade-value');
+        if (display) display.textContent = newVal;
+        updateWeightedStats();
+        calculateForecast();
+    }
+
+    function changeWeight(btn, delta) {
+        const item = btn.closest('.grade-item');
+        if (!item) return;
+        let current = parseInt(item.dataset.weight) || 1;
+        let newWeight = Math.min(Math.max(current + delta, 1), 5);
+        item.dataset.weight = newWeight;
+        const display = item.querySelector('.weight-value');
+        if (display) display.textContent = newWeight;
+        updateWeightedStats();
+        calculateForecast();
+    }
+
+    function removeGrade(btn) {
+        const item = btn.closest('.grade-item');
+        if (item) item.remove();
+        updateWeightedStats();
+        calculateForecast();
+    }
+
+    function updateWeightedStats() {
+        const items = document.querySelectorAll('.grade-item');
+        const grades = [];
+        items.forEach(item => {
+            const val = parseInt(item.dataset.value);
+            const weight = parseInt(item.dataset.weight) || 1;
+            if (!isNaN(val) && val > 0) grades.push({ value: val, weight });
+        });
+
+        const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
+        const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
+        let avg = totalWeight > 0 ? weightedSum / totalWeight : 0;
+
+        const avgDisplay = document.getElementById('weightedAverage');
+        if (avgDisplay) avgDisplay.textContent = avg.toFixed(1);
+
+        let quarterGrade = '—';
+        if (avg >= 4.6) quarterGrade = '5';
+        else if (avg >= 3.6) quarterGrade = '4';
+        else if (avg >= 2.6) quarterGrade = '3';
+        else if (avg > 0) quarterGrade = '2';
+        
+        const qDisplay = document.getElementById('quarterGrade');
+        if (qDisplay) qDisplay.textContent = quarterGrade;
+
+        const countDisplay = document.getElementById('gradeCount');
+        if (countDisplay) countDisplay.textContent = grades.length + ' оценок';
+
+        const fills = document.querySelectorAll('.spec-fill');
+        const scale = parseInt(document.querySelector('.scale-btn.active')?.textContent) || 5;
+        const base = Math.min(avg / scale * 100, 100);
+        if (fills.length >= 3) {
+            fills[0].style.width = Math.min(base * 1.0, 100) + '%';
+            fills[1].style.width = Math.min(base * 0.85 + 10, 100) + '%';
+            fills[2].style.width = Math.min(base * 0.7 + 15, 100) + '%';
+        }
+    }
+
+    function calculateForecast() {
+        const goalSelect = document.getElementById('goalSelect');
+        const goalDisplay = document.getElementById('goalDisplay');
+        const neededDisplay = document.getElementById('neededGrades');
+        if (!goalSelect || !goalDisplay || !neededDisplay) return;
+        
+        const goal = parseInt(goalSelect.value);
+        goalDisplay.textContent = goal;
+        
+        const items = document.querySelectorAll('.grade-item');
+        const grades = [];
+        items.forEach(item => {
+            const val = parseInt(item.dataset.value);
+            const weight = parseInt(item.dataset.weight) || 1;
+            if (!isNaN(val) && val > 0) grades.push({ value: val, weight });
+        });
+        
+        if (grades.length === 0) {
+            neededDisplay.textContent = '—';
+            return;
+        }
+
+        const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
+        const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
+        const scale = parseInt(document.querySelector('.scale-btn.active')?.textContent) || 5;
+        const maxVal = scale;
+
+        let needed = 0, found = false;
+        for (let i = 0; i <= 100; i++) {
+            const newTotal = totalWeight + i;
+            const newSum = weightedSum + i * maxVal;
+            if (newSum / newTotal >= goal - 0.01) {
+                needed = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found || needed > 50) {
+            neededDisplay.textContent = 'очень много 😅';
+        } else if (needed === 0) {
+            neededDisplay.textContent = '0 (уже есть!) 🎉';
+        } else {
+            neededDisplay.textContent = needed;
+        }
+    }
+
+    function setScale(newScale) {
+        document.querySelectorAll('.scale-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.includes(newScale + '-балльная'));
+        });
+        document.querySelectorAll('.grade-item .grade-value').forEach(el => {
+            let val = parseInt(el.textContent);
+            const scale = parseInt(newScale);
+            if (val > scale) {
+                el.textContent = scale;
+                const item = el.closest('.grade-item');
+                if (item) item.dataset.value = scale;
+            }
+        });
+        updateWeightedStats();
+        calculateForecast();
+    }
+
+    function calcSimple() {
+        const input = document.getElementById('simpleInput');
+        const avgDisplay = document.getElementById('simpleAverage');
+        const countDisplay = document.getElementById('simpleCount');
+        
+        if (!input || !avgDisplay || !countDisplay) return;
+        
+        const raw = input.value;
+        const arr = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x) && x >= 1 && x <= 10);
+        
+        if (arr.length === 0) {
+            avgDisplay.textContent = '—';
+            countDisplay.textContent = '0';
+            return;
+        }
+        
+        const sum = arr.reduce((a, b) => a + b, 0);
+        const avg = sum / arr.length;
+        avgDisplay.textContent = avg.toFixed(2);
+        countDisplay.textContent = arr.length;
+    }
+
+    function clearSimple() {
+        const input = document.getElementById('simpleInput');
+        const avgDisplay = document.getElementById('simpleAverage');
+        const countDisplay = document.getElementById('simpleCount');
+        
+        if (input) input.value = '';
+        if (avgDisplay) avgDisplay.textContent = '—';
+        if (countDisplay) countDisplay.textContent = '0';
+    }
+
+    // Автозапуск примеров
+    document.addEventListener('DOMContentLoaded', function() {
+        const existing = document.querySelectorAll('.grade-item');
+        if (existing.length === 0) {
+            addGrade(4, 1);
+            addGrade(5, 2);
+            addGrade(3, 1);
+            addGrade(4, 1);
+            addGrade(5, 3);
+        }
+    });
+</script>
 </body>
 </html>
