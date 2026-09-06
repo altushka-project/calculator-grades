@@ -1,180 +1,469 @@
+/* ===== ОБЩИЙ СТИЛЬ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(145deg, #d4e9ff 0%, #a8d5ff 50%, #7bbfff 100%);
+    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f0f7ff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 20px;
+    padding: 40px 20px;
+    color: #1a2a3a;
 }
 
 .container {
+    max-width: 1200px;
     width: 100%;
-    max-width: 500px;
 }
 
-.card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    border-radius: 40px;
-    padding: 40px 35px;
-    box-shadow: 0 25px 60px rgba(70, 130, 200, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: 0.3s;
-}
-
-.card:hover {
-    box-shadow: 0 35px 80px rgba(70, 130, 200, 0.35);
-}
-
+/* ===== ШАПКА ===== */
 .header {
-    text-align: center;
     margin-bottom: 30px;
 }
 
 .header h1 {
-    font-size: 28px;
-    color: #1a3a5c;
-    margin: 0 0 8px 0;
-    font-weight: 700;
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #1a2a3a;
 }
 
-.header p {
+.header h1 span {
+    font-weight: 700;
+    color: #2b7be0;
+}
+
+.header .subtitle {
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #7a9bb8;
+    margin-top: -5px;
+}
+
+.motto {
+    margin-top: 20px;
+    border-left: 4px solid #2b7be0;
+    padding-left: 20px;
+}
+
+.motto p:first-child {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #2b7be0;
+    text-transform: uppercase;
+}
+
+.motto h2 {
+    font-size: 28px;
+    font-weight: 400;
+    color: #1a2a3a;
+    margin: 6px 0;
+}
+
+.motto .desc {
     font-size: 15px;
     color: #5a7d9a;
-    margin: 0;
-    font-weight: 400;
+    max-width: 500px;
 }
 
-.input-section {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* ===== СЕТКА ===== */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
-.input-section label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a3a5c;
-    letter-spacing: 0.3px;
-}
-
-.input-section input {
-    padding: 16px 20px;
-    border: 2px solid #c5dff0;
-    border-radius: 20px;
-    font-size: 16px;
+/* ===== ЛЕВАЯ ПАНЕЛЬ ===== */
+.left-panel {
     background: white;
-    outline: none;
-    transition: 0.3s;
-    color: #1a3a5c;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
 }
 
-.input-section input:focus {
-    border-color: #4d9eff;
-    box-shadow: 0 0 0 4px rgba(77, 158, 255, 0.15);
-}
-
-.input-section input::placeholder {
-    color: #a0bdd6;
-}
-
-.button-group {
-    display: flex;
-    gap: 12px;
-    margin-top: 5px;
-}
-
-.btn-primary {
-    flex: 2;
-    padding: 16px;
-    background: linear-gradient(145deg, #4d9eff, #2b7be0);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 6px 20px rgba(45, 123, 224, 0.35);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(45, 123, 224, 0.45);
-}
-
-.btn-secondary {
-    flex: 1;
-    padding: 16px;
-    background: #eaf3fa;
-    color: #1a3a5c;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
+.section-title h3 {
+    font-size: 18px;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+    color: #1a2a3a;
 }
 
-.btn-secondary:hover {
+.section-title span {
+    font-size: 13px;
+    color: #7a9bb8;
+}
+
+/* Список оценок */
+.grades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+    min-height: 50px;
+}
+
+.grade-item {
+    background: #f0f7ff;
+    border-radius: 14px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e0edf5;
+    transition: 0.2s;
+}
+
+.grade-item:hover {
+    border-color: #2b7be0;
+}
+
+.grade-item input[type="number"] {
+    width: 44px;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: #1a2a3a;
+    outline: none;
+}
+
+.grade-item input[type="number"]::-webkit-inner-spin-button {
+    opacity: 0.5;
+}
+
+.grade-item .weight-input {
+    width: 36px;
+    font-size: 13px;
+    color: #5a7d9a;
+    border-left: 1px solid #d0e0ec;
+    padding-left: 8px;
+}
+
+.grade-item .delete-btn {
+    background: none;
+    border: none;
+    color: #c0392b;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+.grade-item .delete-btn:hover {
+    opacity: 1;
+}
+
+/* Кнопка добавления */
+.add-btn {
+    background: #eaf3fa;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2b7be0;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 20px;
+}
+
+.add-btn:hover {
     background: #d4e4f2;
     transform: translateY(-2px);
 }
 
-.result-section {
-    margin-top: 25px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 24px;
-    min-height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: 0.3s;
+/* Шкала оценивания */
+.scale-selector {
+    background: #f8faff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
 }
 
-.result-placeholder {
-    color: #7a9bb8;
-    font-size: 15px;
-}
-
-.result-grade {
-    font-size: 52px;
-    font-weight: 800;
-    line-height: 1;
-}
-
-.result-status {
-    font-size: 18px;
+.scale-selector > span {
+    font-size: 14px;
     font-weight: 600;
+    color: #1a2a3a;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.scale-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.scale-btn {
+    padding: 6px 18px;
+    border: 2px solid #d0e0ec;
+    border-radius: 20px;
+    background: white;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5a7d9a;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.scale-btn:hover {
+    border-color: #2b7be0;
+    color: #2b7be0;
+}
+
+.scale-btn.active {
+    border-color: #2b7be0;
+    background: #2b7be0;
+    color: white;
+}
+
+.scale-note {
+    font-size: 12px;
+    color: #a0bdd6;
     margin-top: 8px;
 }
 
-.result-count {
+/* Как работает расчёт */
+.how-it-works {
+    background: #f8faff;
+    border-radius: 16px;
+    padding: 18px 20px;
+}
+
+.how-it-works h4 {
     font-size: 13px;
-    color: #7a9bb8;
-    margin-top: 6px;
+    font-weight: 600;
+    color: #1a2a3a;
+    margin-bottom: 6px;
 }
 
-.footer-note {
+.how-it-works p {
+    font-size: 13px;
+    color: #5a7d9a;
+    line-height: 1.5;
+}
+
+.how-it-works .formula {
+    margin-top: 8px;
+    background: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2b7be0;
     text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px dashed #c5dff0;
 }
 
-.footer-note p {
+/* ===== ПРАВАЯ ПАНЕЛЬ ===== */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Спецификация */
+.specification {
+    background: white;
+    border-radius: 24px;
+    padding: 24px 28px;
+    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+}
+
+.specification h3 {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #7a9bb8;
+    margin-bottom: 16px;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.spec-label {
+    font-size: 13px;
+    color: #1a2a3a;
+    min-width: 140px;
+}
+
+.spec-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2b7be0;
+    margin-left: auto;
+}
+
+.spec-bar {
+    flex: 1;
+    height: 6px;
+    background: #eaf3fa;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.spec-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4d9eff, #2b7be0);
+    border-radius: 4px;
+    transition: width 0.5s;
+}
+
+/* Текущий результат */
+.current-result {
+    background: white;
+    border-radius: 24px;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+}
+
+.current-result span {
+    font-size: 14px;
+    color: #7a9bb8;
+}
+
+.current-result strong {
+    font-size: 20px;
+    color: #1a2a3a;
+}
+
+/* Следующий шаг (прогноз) */
+.next-step {
+    background: white;
+    border-radius: 24px;
+    padding: 24px 28px;
+    box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+}
+
+.next-step h4 {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #7a9bb8;
+    margin-bottom: 4px;
+}
+
+.next-step > p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a2a3a;
+    margin-bottom: 16px;
+}
+
+.goal-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.goal-section label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a2a3a;
+}
+
+.goal-section select {
+    padding: 8px 16px;
+    border: 2px solid #d0e0ec;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2a3a;
+    background: white;
+    outline: none;
+    cursor: pointer;
+}
+
+.goal-section select:focus {
+    border-color: #2b7be0;
+}
+
+.forecast-result {
+    background: #f0f7ff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+}
+
+.forecast-result p {
+    font-size: 14px;
+    color: #1a2a3a;
+}
+
+.forecast-result strong {
+    color: #2b7be0;
+}
+
+/* Цитаты на японском */
+.quote {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eaf3fa;
+}
+
+.quote p {
+    font-size: 14px;
+    font-style: italic;
+    color: #5a7d9a;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.quote p:first-child {
+    font-size: 15px;
+    color: #2b7be0;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+    margin-top: 40px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0edf5;
+}
+
+.footer p {
     font-size: 13px;
     color: #7a9bb8;
     margin: 3px 0;
-    font-weight: 400;
 }
 
-.footer-note .year {
-    font-size: 11px;
-    color: #a0bdd6;
-    letter-spacing: 1px;
+/* ===== АДАПТИВ ===== */
+@media (max-width: 900px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .header h1 {
+        font-size: 30px;
+    }
+    .motto h2 {
+        font-size: 20px;
+    }
+    .left-panel, .right-panel {
+        padding: 18px;
+    }
+    .spec-item {
+        flex-wrap: wrap;
+    }
+    .spec-label {
+        min-width: 100%;
+    }
+    .grade-item input[type="number"] {
+        width: 36px;
+    }
 }
