@@ -3,30 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оценка+</title>
+    <title>Оценка + Золото</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <!-- Эффект размытых пятен -->
+    <div class="blur-circle circle-1"></div>
+    <div class="blur-circle circle-2"></div>
+    <div class="blur-circle circle-3"></div>
 
+    <div class="container">
         <!-- ШАПКА -->
         <div class="header">
             <h1>Оценка <span>+</span></h1>
             <p class="subtitle">личный калькулятор</p>
             <div class="motto">
-                <p>СПОКОЙНО К ОТЛИЧНОЙ ОЦЕНКЕ</p>
+                <p class="motto-label">СПОКОЙНО К ОТЛИЧНОЙ ОЦЕНКЕ</p>
                 <h2>Твоя следующая оценка — по плану.</h2>
                 <p class="desc">Добавь оценки за четверть, выбери цель — и увидишь честный маршрут до нужного результата.</p>
             </div>
         </div>
 
-        <!-- ОСНОВНОЙ БЛОК: оценки + результат -->
+        <!-- ОСНОВНАЯ СЕТКА -->
         <div class="main-grid">
-            <!-- Левая часть: ввод оценок -->
+            <!-- Левая панель: Оценки -->
             <div class="left-panel">
                 <div class="section-title">
-                    <h3>Твои оценки</h3>
-                    <span>Введите все отметки за текущую четверть</span>
+                    <h3>📋 Твои оценки</h3>
+                    <span>Добавь отметки и укажи их важность (вес)</span>
+                </div>
+
+                <!-- ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМОВ РАСЧЕТА -->
+                <div class="mode-selector">
+                    <span>Режим расчета:</span>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" onclick="setMode('average')" id="modeAvg">📊 Средний балл</button>
+                        <button class="mode-btn" onclick="setMode('weighted')" id="modeWeight">⚖️ Вес оценок</button>
+                    </div>
+                    <p class="mode-note" id="modeDescription">Считает сумму всех оценок, деленную на их количество (без весов).</p>
+                </div>
+
+                <!-- ПОДСКАЗКА ПО ВЕСАМ (появляется только в режиме "Вес оценок") -->
+                <div class="weight-legend" id="weightLegend" style="display: none;">
+                    <h4>📌 Что означает вес:</h4>
+                    <div class="legend-grid">
+                        <span><b>1</b> — Ответ у доски, домашняя работа</span>
+                        <span><b>2</b> — Самостоятельная работа</span>
+                        <span><b>3</b> — Лабораторная работа, практикум</span>
+                        <span><b>4</b> — Контрольная работа (четвертная)</span>
+                        <span><b>5</b> — Итоговая контрольная, ОГЭ/ВПР</span>
+                    </div>
+                    <p class="legend-note">Чем выше вес, тем сильнее оценка влияет на средний балл.</p>
                 </div>
 
                 <!-- Список оценок -->
@@ -35,11 +63,11 @@
                 </div>
 
                 <!-- Кнопка добавления -->
-                <button class="add-btn" onclick="addGrade()">+ Добавить</button>
+                <button class="add-btn" onclick="addGrade()">+ Добавить оценку</button>
 
                 <!-- Шкала оценивания -->
                 <div class="scale-selector">
-                    <span>Шкала оценивания</span>
+                    <span>⚖️ Шкала оценивания</span>
                     <div class="scale-buttons">
                         <button class="scale-btn active" onclick="setScale('5')">5-балльная</button>
                         <button class="scale-btn" onclick="setScale('10')">10-балльная</button>
@@ -47,54 +75,48 @@
                     <p class="scale-note">можно изменить в любой момент</p>
                 </div>
 
-                <!-- Как работает расчет -->
+                <!-- Как работает расчёт -->
                 <div class="how-it-works">
-                    <h4>Как работает расчёт</h4>
-                    <p>Калькулятор находит среднее арифметическое: складывает все оценки и делит сумму на их количество. Для прогноза он добавляет будущие максимальные оценки и проверяет, сколько их нужно, чтобы среднее стало не ниже цели.</p>
-                    <div class="formula">сумма текущих + будущие оценки ÷ количество оценок</div>
-                </div>
+                    <h4>📖 Как работает расчёт</h4>
+                    <div id="formulaText">
+                        <p>Складываем все оценки и делим на их количество.</p>
+                        <div class="formula">(оценка + оценка) ÷ количество</div>
+                    </div>
+                    </div>
             </div>
 
-            <!-- Правая панель: статистика и прогноз -->
+            <!-- Правая панель: Статистика и прогноз -->
             <div class="right-panel">
                 <!-- Спецификация -->
                 <div class="specification">
-                    <h3>СПЕЦИФИКАЦИЯ</h3>
+                    <h3>📊 СПЕЦИФИКАЦИЯ</h3>
                     <div class="spec-item">
                         <span class="spec-label">Средний балл</span>
                         <span class="spec-value" id="currentAverage">0,0</span>
                     </div>
                     <div class="spec-item">
-                        <span class="spec-label">Профессиональная</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 75%;"></div></div>
+                        <span class="spec-label">Успеваемость</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
                     </div>
                     <div class="spec-item">
-                        <span class="spec-label">Интеллектуальная</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 60%;"></div></div>
+                        <span class="spec-label">Стабильность</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
                     </div>
                     <div class="spec-item">
-                        <span class="spec-label">Умение работать с цифровыми данными</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 80%;"></div></div>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Умение находить ошибки</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 50%;"></div></div>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Умение решать задачи на основе данных</span>
-                        <div class="spec-bar"><div class="spec-fill" style="width: 70%;"></div></div>
+                        <span class="spec-label">Потенциал</span>
+                        <div class="spec-bar"><div class="spec-fill" style="width: 0%;"></div></div>
                     </div>
                 </div>
 
                 <!-- Текущий результат -->
                 <div class="current-result">
-                    <span>Текущий результат</span>
+                    <span>📌 Текущий результат</span>
                     <strong id="gradeCount">0 оценок</strong>
                 </div>
 
                 <!-- Следующий шаг (прогноз) -->
                 <div class="next-step">
-                    <h4>СЛЕДУЮЩИЙ ШАГ</h4>
+                    <h4>🎯 СЛЕДУЮЩИЙ ШАГ</h4>
                     <p>Как прийти к цели?</p>
 
                     <div class="goal-section">
@@ -116,12 +138,13 @@
                         <p>Чтобы получить <strong id="goalDisplay">4</strong>, нужно получить ещё <strong id="neededGrades">0</strong> оценок на максимальный балл.</p>
                     </div>
 
-                   <div class="quote">
-    <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
-    <p class="translation">— Мечты не убегают, убегаем мы сами</p>
-    <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
-    <p class="translation">— Успех рождается там, где встречаются подготовка и удача</p>
-</div>
+                    <!-- Цитаты -->
+                    <div class="quote">
+                        <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
+                        <p class="translation">— Мечты не убегают, убегаем мы сами</p>
+                        <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
+                        <p class="translation">— Успех рождается там, где встречаются подготовка и удача</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,7 +152,7 @@
         <!-- ФУТЕР -->
         <div class="footer">
             <p>Разработано ученицей 8 класса</p>
-            <p>© 2026</p>
+            <p class="year">© 2026</p>
         </div>
     </div>
 
