@@ -1,0 +1,52 @@
+<div class="spec-bar"><div class="spec-fill" style="width: 70%;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Текущий результат -->
+                <div class="current-result">
+                    <span>Текущий результат</span>
+                    <strong id="gradeCount">0 оценок</strong>
+                </div>
+
+                <!-- Следующий шаг (прогноз) -->
+                <div class="next-step">
+                    <h4>СЛЕДУЮЩИЙ ШАГ</h4>
+                    <p>Как прийти к цели?</p>
+
+                    <div class="goal-section">
+                        <label>Моя цель</label>
+                        <select id="goalSelect" onchange="calculateForecast()">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+
+                    <div class="forecast-result" id="forecastResult">
+                        <p>Чтобы получить <strong id="goalDisplay">4</strong>, нужно получить ещё <strong id="neededGrades">0</strong> оценок на максимальный балл.</p>
+                    </div>
+
+                    <div class="quote">
+                        <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
+                        <p>「成功は準備とチャンスが出会った場所に生まれる」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ФУТЕР -->
+        <div class="footer">
+            <p>Разработано ученицей 8 класса</p>
+            <p>© 2026</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
