@@ -1,22 +1,60 @@
 // === ХРАНИЛИЩЕ ===
 let grades = [];
 let scale = 5; // 5 или 10
+let currentMode = 'average'; // 'average' или 'weighted'
 
 // === ДОБАВЛЕНИЕ ОЦЕНКИ ===
-function addGrade(value = '', weight = 1) {
+function addGrade(value = 5, weight = 1) {
     const list = document.getElementById('gradesList');
     const item = document.createElement('div');
     item.className = 'grade-item';
 
-    const maxVal = scale === 5 ? 5 : 10;
+    const maxVal = scale;
 
     item.innerHTML = `
-        <input type="number" min="1" max="${maxVal}" value="${value || ''}" placeholder="5" onchange="updateGrades()">
-        <input type="number" class="weight-input" min="1" max="10" value="${weight}" placeholder="вес" onchange="updateGrades()">
+        <div class="grade-value" id="gradeDisplay_${Date.now()}">${value}</div>
+        <div class="grade-controls">
+            <button onclick="changeGrade(this, -1)">−</button>
+            <button onclick="changeGrade(this, 1)">+</button>
+        </div>
+        <div class="weight-control" id="weightControl_${Date.now()}">
+            <span>Вес:</span>
+            <button onclick="changeWeight(this, -1)">−</button>
+            <span class="weight-value">${weight}</span>
+            <button onclick="changeWeight(this, 1)">+</button>
+        </div>
         <button class="delete-btn" onclick="removeGrade(this)">✕</button>
     `;
 
+    item.dataset.value = value;
+    item.dataset.weight = weight;
+
     list.appendChild(item);
+    
+    // Применяем текущий режим (скрываем вес, если нужно)
+    applyMode();
+    updateGrades();
+}
+
+// === ИЗМЕНЕНИЕ ОЦЕНКИ ===
+function changeGrade(btn, delta) {
+    const item = btn.closest('.grade-item');
+    const display = item.querySelector('.grade-value');
+    let current = parseInt(item.dataset.value) || 5;
+    let newVal = Math.min(Math.max(current + delta, 1), scale);
+    item.dataset.value = newVal;
+    display.textContent = newVal;
+    updateGrades();
+}
+
+// === ИЗМЕНЕНИЕ ВЕСА ===
+function changeWeight(btn, delta) {
+    const item = btn.closest('.grade-item');
+    const display = item.querySelector('.weight-value');
+    let current = parseInt(item.dataset.weight) || 1;
+    let newWeight = Math.min(Math.max(current + delta, 1), 10);
+    item.dataset.weight = newWeight;
+    display.textContent = newWeight;
     updateGrades();
 }
 
@@ -26,15 +64,52 @@ function removeGrade(btn) {
     updateGrades();
 }
 
+// === ПЕРЕКЛЮЧЕНИЕ РЕЖИМА ===
+function setMode(mode) {
+    currentMode = mode;
+    
+    // Обновляем кнопки
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    if (mode === 'average') {
+        document.getElementById('modeAvg').classList.add('active');
+        document.getElementById('modeDescription').textContent = 'Считает сумму всех оценок, деленную на их количество (без весов).';
+        document.getElementById('formulaText').innerHTML = `
+            <p>Складываем все оценки и делим на их количество.</p>
+            <div class="formula">(оценка + оценка) ÷ количество</div>
+        `;
+        document.getElementById('weightLegend').style.display = 'none';
+    } else {
+        document.getElementById('modeWeight').classList.add('active');
+        document.getElementById('modeDescription').textContent = 'Учитывает важность каждой оценки (вес). Чем выше вес, тем сильнее влияние.';
+        document.getElementById('formulaText').innerHTML = `
+            <p>Умножаем каждую оценку на её вес, складываем и делим на сумму весов.</p>
+            <div class="formula">(оценка × вес) + ... ÷ сумма весов</div>
+        `;
+        document.getElementById('weightLegend').style.display = 'block';
+    }
+    
+    applyMode();
+    updateGrades();
+}
+
+// === ПРИМЕНЕНИЕ РЕЖИМА (показываем/скрываем вес) ===
+function applyMode() {
+    const weightControls = document.querySelectorAll('.weight-control');
+    if (currentMode === 'average') {
+        weightControls.forEach(el => el.style.display = 'none');
+    } else {
+        weightControls.forEach(el => el.style.display = 'flex');
+    }
+}
+
 // === ОБНОВЛЕНИЕ ДАННЫХ ===
 function updateGrades() {
     const items = document.querySelectorAll('.grade-item');
     grades = [];
 
     items.forEach(item => {
-        const inputs = item.querySelectorAll('input[type="number"]');
-        const val = parseFloat(inputs[0].value);
-        const weight = parseFloat(inputs[1].value) || 1;
+        const val = parseInt(item.dataset.value);
+        const weight = parseInt(item.dataset.weight) || 1;
         if (!isNaN(val) && val > 0) {
             grades.push({ value: val, weight: weight });
         }
@@ -46,26 +121,33 @@ function updateGrades() {
 
 // === СТАТИСТИКА ===
 function updateStats() {
-    const totalWeight = grades.reduce((sum, g) => sum + g.weight, 0);
-    const weightedSum = grades.reduce((sum, g) => sum + g.value * g.weight, 0);
-
     let avg = 0;
-    if (totalWeight > 0) {
-        avg = weightedSum / totalWeight;
+    
+    if (currentMode === 'average') {
+        // Обычный средний балл
+        const sum = grades.reduce((s, g) => s + g.value, 0);
+        if (grades.length > 0) {
+            avg = sum / grades.length;
+        }
+    } else {
+        // Взвешенный средний
+        const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
+        const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
+        if (totalWeight > 0) {
+            avg = weightedSum / totalWeight;
+        }
     }
 
     document.getElementById('currentAverage').textContent = avg.toFixed(1);
     document.getElementById('gradeCount').textContent = grades.length + ' оценок';
 
-    // Обновляем "Профессиональная" и другие навыки (просто для красоты)
+    // Обновляем шкалы навыков
     const fills = document.querySelectorAll('.spec-fill');
-    const base = Math.min(avg / (scale === 5 ? 5 : 10) * 100, 100);
-    if (fills.length >= 5) {
+    const base = Math.min(avg / scale * 100, 100);
+    if (fills.length >= 3) {
         fills[0].style.width = Math.min(base * 1.0, 100) + '%';
-        fills[1].style.width = Math.min(base * 0.85, 100) + '%';
-        fills[2].style.width = Math.min(base * 1.1, 100) + '%';
-        fills[3].style.width = Math.min(base * 0.7, 100) + '%';
-        fills[4].style.width = Math.min(base * 0.9, 100) + '%';
+        fills[1].style.width = Math.min(base * 0.85 + 10, 100) + '%';
+        fills[2].style.width = Math.min(base * 0.7 + 15, 100) + '%';
     }
 }
 
@@ -79,63 +161,16 @@ function calculateForecast() {
         return;
     }
 
-    const totalWeight = grades.reduce((sum, g) => sum + g.weight, 0);
-    const weightedSum = grades.reduce((sum, g) => sum + g.value * g.weight, 0);
-    const maxVal = scale === 5 ? 5 : 10;
-
-    // Ищем сколько нужно максимальных оценок
+    const maxVal = scale;
     let needed = 0;
     let found = false;
 
     for (let i = 0; i <= 100; i++) {
-        const newTotalWeight = totalWeight + i;
-        const newWeightedSum = weightedSum + i * maxVal;
-        const newAvg = newWeightedSum / newTotalWeight;
-
-        if (newAvg >= goal - 0.01) {
-            needed = i;
-            found = true;
-            break;
-        }
-    }
-
-    if (!found || needed > 50) {
-        document.getElementById('neededGrades').textContent = 'очень много 😅';
-    } else if (needed === 0) {
-        document.getElementById('neededGrades').textContent = '0 (уже достигла!) 🎉';
-    } else {
-        document.getElementById('neededGrades').textContent = needed;
-    }
-}
-
-// === СМЕНА ШКАЛЫ ===
-function setScale(newScale) {
-    scale = parseInt(newScale);
-
-    // Обновляем кнопки
-    document.querySelectorAll('.scale-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.includes(newScale + '-балльная')) {
-            btn.classList.add('active');
-        }
-    });
-
-    // Обновляем max у всех инпутов
-    const maxVal = scale === 5 ? 5 : 10;
-  document.querySelectorAll('.grade-item input[type="number"]:first-child').forEach(input => {
-        input.max = maxVal;
-        if (parseFloat(input.value) > maxVal) {
-            input.value = maxVal;
-        }
-    });
-
-    updateGrades();
-}
-
-// === ИНИЦИАЛИЗАЦИЯ ===
-// Добавляем примеры оценок
-addGrade(4, 1);
-addGrade(5, 2);
-addGrade(3, 1);
-addGrade(4, 1);
-addGrade(5, 3);
+        let newAvg;
+        
+        if (currentMode === 'average') {
+            const sum = grades.reduce((s, g) => s + g.value, 0);
+            const count = grades.length + i;
+            newAvg = (sum + i * maxVal) / count;
+        } else {
+            const totalWeight
