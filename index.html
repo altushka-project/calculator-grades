@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,7 +10,6 @@
 </head>
 <body>
 
-<!-- Золотые молнии -->
 <div class="lightning l1"></div>
 <div class="lightning l2"></div>
 <div class="lightning l3"></div>
@@ -18,7 +18,6 @@
 
 <div class="container">
 
-    <!-- ШАПКА -->
     <div class="header">
         <h1>Оценка <span>+</span></h1>
         <p class="subtitle">личный калькулятор</p>
@@ -29,7 +28,6 @@
         </div>
     </div>
 
-    <!-- ===== 1. ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР ===== -->
     <div class="section-title-block">
         <h2>📊 ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР</h2>
         <p>Учитывает важность оценок (вес) по официальному положению школы.</p>
@@ -42,7 +40,6 @@
                 <span>Добавь отметки и укажи их вес</span>
             </div>
 
-            <!-- ПОДСКАЗКА ПО ВЕСАМ -->
             <div class="weight-legend">
                 <h4>⚡ Вес типовых работ:</h4>
                 <div class="legend-grid compact">
@@ -57,7 +54,6 @@
 
             <div class="grades-list" id="gradesList"></div>
 
-            <!-- КНОПКА ДОБАВЛЕНИЯ -->
             <button class="add-btn" onclick="addGrade()">+ Добавить оценку</button>
 
             <div class="scale-selector">
@@ -82,7 +78,6 @@
                     <span class="spec-value" id="quarterGrade">—</span>
                 </div>
                 
-                <!-- Таблица перевода -->
                 <div class="grade-scale-table">
                     <table>
                         <tr><th>Балл</th><th>Оценка</th></tr>
@@ -92,7 +87,6 @@
                         <tr><td>4.6 – 5</td><td>5</td></tr>
                     </table>
                 </div>
-
                 <div class="spec-item">
                     <span class="spec-label">Успеваемость</span>
                     <div class="spec-bar"><div class="spec-fill" style="width:0%"></div></div>
@@ -136,7 +130,6 @@
         </div>
     </div>
 
-    <!-- ===== 2. ПРОСТОЙ КАЛЬКУЛЯТОР ===== -->
     <div class="section-title-block simple-section">
         <h2>📈 ПРОСТОЙ КАЛЬКУЛЯТОР</h2>
         <p>Считает обычный средний балл без весов.</p>
@@ -155,7 +148,6 @@
         </div>
     </div>
 
-    <!-- ===== ЦИТАТЫ ===== -->
     <div class="quote-section">
         <div class="quote">
             <p>「夢は逃げない、逃げるのはいつも自分だ」</p>
@@ -172,12 +164,10 @@
 
 </div>
 
-<!-- ПОДКЛЮЧАЕМ ТВОЙ СТАРЫЙ, НО ИСПРАВЛЕННЫЙ JS -->
 <script src="script.js"></script>
-
-<!-- ДОБАВЛЯЕМ НЕДОСТАЮЩИЕ ФУНКЦИИ (чтобы кнопки заработали) -->
 <script>
-    // Эти функции переопределяют старые, чтобы работали новые кнопки
+    window.currentScale = 5;
+
     function addGrade(value = 5, weight = 1) {
         const list = document.getElementById('gradesList');
         if (!list) return;
@@ -195,7 +185,7 @@
                 <button onclick="changeGrade(this, 1)">+</button>
             </div>
             <div class="weight-control">
-                <span>Вес:</span>
+            <span>Вес:</span>
                 <button onclick="changeWeight(this, -1)">−</button>
                 <span class="weight-value" id="wv_${id}">${weight}</span>
                 <button onclick="changeWeight(this, 1)">+</button>
@@ -212,7 +202,8 @@
         const item = btn.closest('.grade-item');
         if (!item) return;
         let current = parseInt(item.dataset.value) || 5;
-        let newVal = Math.min(Math.max(current + delta, 1), scale || 5);
+        const maxVal = window.currentScale || 5;
+        let newVal = Math.min(Math.max(current + delta, 1), maxVal);
         item.dataset.value = newVal;
         const display = item.querySelector('.grade-value');
         if (display) display.textContent = newVal;
@@ -255,11 +246,26 @@
         const avgDisplay = document.getElementById('weightedAverage');
         if (avgDisplay) avgDisplay.textContent = avg.toFixed(1);
 
+        const currentScale = window.currentScale || 5;
         let quarterGrade = '—';
-        if (avg >= 4.6) quarterGrade = '5';
-        else if (avg >= 3.6) quarterGrade = '4';
-        else if (avg >= 2.6) quarterGrade = '3';
-        else if (avg > 0) quarterGrade = '2';
+        
+        if (currentScale === 5) {
+            if (avg >= 4.6) quarterGrade = '5';
+            else if (avg >= 3.6) quarterGrade = '4';
+            else if (avg >= 2.6) quarterGrade = '3';
+            else if (avg > 0) quarterGrade = '2';
+        } else if (currentScale === 10) {
+            if (avg >= 9.5) quarterGrade = '10';
+            else if (avg >= 8.5) quarterGrade = '9';
+            else if (avg >= 7.5) quarterGrade = '8';
+            else if (avg >= 6.5) quarterGrade = '7';
+            else if (avg >= 5.5) quarterGrade = '6';
+            else if (avg >= 4.5) quarterGrade = '5';
+            else if (avg >= 3.5) quarterGrade = '4';
+            else if (avg >= 2.5) quarterGrade = '3';
+            else if (avg >= 1.5) quarterGrade = '2';
+            else if (avg > 0) quarterGrade = '1';
+        }
         
         const qDisplay = document.getElementById('quarterGrade');
         if (qDisplay) qDisplay.textContent = quarterGrade;
@@ -268,8 +274,7 @@
         if (countDisplay) countDisplay.textContent = grades.length + ' оценок';
 
         const fills = document.querySelectorAll('.spec-fill');
-        const scale = parseInt(document.querySelector('.scale-btn.active')?.textContent) || 5;
-        const base = Math.min(avg / scale * 100, 100);
+        const base = Math.min(avg / currentScale * 100, 100);
         if (fills.length >= 3) {
             fills[0].style.width = Math.min(base * 1.0, 100) + '%';
             fills[1].style.width = Math.min(base * 0.85 + 10, 100) + '%';
@@ -281,6 +286,7 @@
         const goalSelect = document.getElementById('goalSelect');
         const goalDisplay = document.getElementById('goalDisplay');
         const neededDisplay = document.getElementById('neededGrades');
+        
         if (!goalSelect || !goalDisplay || !neededDisplay) return;
         
         const goal = parseInt(goalSelect.value);
@@ -301,8 +307,7 @@
 
         const totalWeight = grades.reduce((s, g) => s + g.weight, 0);
         const weightedSum = grades.reduce((s, g) => s + g.value * g.weight, 0);
-        const scale = parseInt(document.querySelector('.scale-btn.active')?.textContent) || 5;
-        const maxVal = scale;
+        const maxVal = window.currentScale || 5;
 
         let needed = 0, found = false;
         for (let i = 0; i <= 100; i++) {
@@ -325,18 +330,22 @@
     }
 
     function setScale(newScale) {
+        window.currentScale = parseInt(newScale);
+        
         document.querySelectorAll('.scale-btn').forEach(btn => {
             btn.classList.toggle('active', btn.textContent.includes(newScale + '-балльная'));
         });
+        
         document.querySelectorAll('.grade-item .grade-value').forEach(el => {
             let val = parseInt(el.textContent);
-            const scale = parseInt(newScale);
-            if (val > scale) {
-                el.textContent = scale;
+            const maxVal = window.currentScale;
+            if (val > maxVal) {
+                el.textContent = maxVal;
                 const item = el.closest('.grade-item');
-                if (item) item.dataset.value = scale;
+                if (item) item.dataset.value = maxVal;
             }
         });
+        
         updateWeightedStats();
         calculateForecast();
     }
@@ -373,7 +382,6 @@
         if (countDisplay) countDisplay.textContent = '0';
     }
 
-    // Автозапуск примеров
     document.addEventListener('DOMContentLoaded', function() {
         const existing = document.querySelectorAll('.grade-item');
         if (existing.length === 0) {
@@ -387,3 +395,4 @@
 </script>
 </body>
 </html>
+```
