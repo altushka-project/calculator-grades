@@ -13,6 +13,8 @@
 <div class="lightning l1"></div>
 <div class="lightning l2"></div>
 <div class="lightning l3"></div>
+<div class="lightning l4"></div>
+<div class="lightning l5"></div>
 
 <div class="container">
 
@@ -30,27 +32,27 @@
     <!-- ===== 1. ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР ===== -->
     <div class="section-title-block">
         <h2>📊 ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР</h2>
-        <p>Учитывает важность оценок (вес). Подходит для школ с новой системой.</p>
+        <p>Учитывает важность оценок (вес) по официальному положению школы.</p>
     </div>
 
     <div class="main-grid">
         <div class="left-panel">
             <div class="section-title">
                 <h3>📋 Твои оценки</h3>
-                <span>Добавь отметки и укажи их важность</span>
+                <span>Добавь отметки и укажи их вес</span>
             </div>
 
-            <!-- ПОДСКАЗКА ПО ВЕСАМ -->
+            <!-- ПОДСКАЗКА ПО ВЕСАМ (новая, из положения) -->
             <div class="weight-legend">
-                <h4>⚡ Что означает вес:</h4>
-                <div class="legend-grid">
-                    <span><b>1</b> — Ответ у доски, домашняя работа</span>
-                    <span><b>2</b> — Самостоятельная работа</span>
-                    <span><b>3</b> — Лабораторная работа, практикум</span>
-                    <span><b>4</b> — Контрольная работа</span>
-                    <span><b>5</b> — Итоговая контрольная, ОГЭ/ВПР</span>
+                <h4>⚡ Вес типовых работ:</h4>
+                <div class="legend-grid compact">
+                    <span><b>5</b> — Диагностическая, диктант, сочинение классное, контрольная, проверочная, защита проекта, промежуточная аттестация</span>
+                    <span><b>4</b> — Тематическая, практическая, тест, пересказ, техника чтения, аудирование, работа с документом</span>
+                    <span><b>3</b> — Сочинение домашнее, комплексная оценка на уроке, лабораторная, изложение, чтение наизусть, работа на уроке, устная речь, словарный диктант, творческая, зачет</span>
+                    <span><b>2</b> — Устный ответ, самостоятельная, теоретический опрос, реферат, работа в тетради, работа с текстом</span>
+                    <span><b>1</b> — Работа над ошибками, контрольное списывание, домашняя работа</span>
                 </div>
-                <p class="legend-note">Чем выше вес, тем сильнее оценка влияет на средний балл.</p>
+                <p class="legend-note">Если пропустил работу с весом 3-5 баллов — обязан написать её в любое удобное время.</p>
             </div>
 
             <div class="grades-list" id="gradesList"></div>
@@ -74,6 +76,22 @@
                     <span class="spec-label">Средний балл (с весом)</span>
                     <span class="spec-value" id="weightedAverage">0,0</span>
                 </div>
+                <div class="spec-item">
+                    <span class="spec-label">Четвертная оценка</span>
+                    <span class="spec-value" id="quarterGrade">—</span>
+                </div>
+                
+                <!-- Таблица перевода баллов в оценку -->
+                <div class="grade-scale-table">
+                    <table>
+                        <tr><th>Балл</th><th>Оценка</th></tr>
+                        <tr><td>0 – 2.59</td><td>2</td></tr>
+                        <tr><td>2.6 – 3.59</td><td>3</td></tr>
+                        <tr><td>3.6 – 4.59</td><td>4</td></tr>
+                        <tr><td>4.6 – 5</td><td>5</td></tr>
+                    </table>
+                </div>
+
                 <div class="spec-item">
                     <span class="spec-label">Успеваемость</span>
                     <div class="spec-bar"><div class="spec-fill" style="width:0%"></div></div>
