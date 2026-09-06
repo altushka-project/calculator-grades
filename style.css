@@ -467,3 +467,14 @@ body {
         width: 36px;
     }
 }
+
+/* ===== ПЕРЕВОД ЦИТАТ ===== */
+.quote .translation {
+    font-size: 13px;
+    color: #7a9bb8;
+    font-style: italic;
+    margin-top: -8px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 2px solid #c5dff0;
+}
