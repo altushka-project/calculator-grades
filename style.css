@@ -678,3 +678,130 @@ body {
         font-size: 10px;
     }
 }
+/* ============================================================
+   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КОНТРАСТНОСТИ (НЕ УДАЛЯТЬ)
+   ============================================================ */
+
+/* Делаем текст в карточках тёмным, чтобы читалось */
+.left-panel,
+.right-panel,
+.specification,
+.current-result,
+.next-step,
+.simple-calculator,
+.grade-scale-table,
+.scale-selector,
+.simple-result {
+    color: #1a1a1a !important;
+}
+
+/* Все заголовки и подписи внутри карточек — тёмные */
+.left-panel .section-title h3,
+.left-panel .section-title span,
+.weight-legend h4,
+.weight-legend .legend-grid span,
+.weight-legend .legend-note,
+.scale-selector > span,
+.scale-selector .scale-note,
+.specification h3,
+.spec-item .spec-label,
+.spec-item .spec-value,
+.current-result span,
+.current-result strong,
+.next-step h4,
+.next-step > p,
+.goal-section label,
+.goal-section select,
+.forecast-result p,
+.forecast-result strong,
+.simple-calculator label,
+.simple-calculator input,
+.simple-result span,
+.simple-result strong,
+.grade-scale-table th,
+.grade-scale-table td {
+    color: #1a1a1a !important;
+    text-shadow: none !important;
+}
+
+/* Поля ввода — белые с чёрным текстом */
+.simple-calculator input,
+.simple-input-area input {
+    background: rgba(255, 255, 255, 0.85) !important;
+    color: #1a1a1a !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+.simple-calculator input::placeholder {
+    color: #666 !important;
+}
+
+/* Кнопки шкалы оценивания */
+.scale-btn {
+    color: #1a1a1a !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    border: 2px solid rgba(0, 0, 0, 0.1) !important;
+}
+.scale-btn.active {
+    background: #c9a84c !important;
+    color: white !important;
+    border-color: #c9a84c !important;
+}
+
+/* Карточки оценок */
+.grade-item .grade-value,
+.grade-item .weight-control span,
+.grade-item .weight-control .weight-value,
+.grade-item .grade-controls button {
+    color: #1a1a1a !important;
+}
+.grade-item .grade-controls button,
+.grade-item .weight-control button {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+.grade-item .grade-controls button:hover,
+.grade-item .weight-control button:hover {
+    background: #c9a84c !important;
+    color: white !important;
+}
+
+/* Кнопка "Очистить" */
+.clear-btn {
+    color: #1a1a1a !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+.clear-btn:hover {
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Выпадающий список цели */
+.goal-section select {
+    background: rgba(255, 255, 255, 0.8) !important;
+    color: #1a1a1a !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Таблица перевода баллов */
+.grade-scale-table {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+.grade-scale-table th,
+.grade-scale-table td {
+    color: #1a1a1a !important;
+}
+
+/* Заголовки секций (ВЗВЕШЕННЫЙ КАЛЬКУЛЯТОР, ПРОСТОЙ КАЛЬКУЛЯТОР) */
+.section-title-block h2 {
+    color: #f5e6b8 !important;
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.6) !important;
+}
+.section-title-block p {
+    color: #e0d6c0 !important;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Мотивационная фраза в шапке */
+.motto .desc {
+    color: #e0d6c0 !important;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.4) !important;
+}
