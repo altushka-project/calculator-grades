@@ -542,77 +542,51 @@ body {
 .quote-section {
     margin-top: 40px;
     padding-top: 30px;
-    border-top: 1px solid rgba(201,168,76,0.15);
+    border-top: 1px solid rgba(201,168,76,0.3);
 }
+
 .quote p {
-    font-size: 16px;
+    font-size: 18px;
     color: #f5f0e6;
     line-height: 1.8;
-    font-weight: 300;
+    font-weight: 400;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
 }
+
 .quote .translation {
-    font-size: 13px;
-    color: #d4c8b0;
+    font-size: 14px;
+    color: #d4e4ff;
     font-style: italic;
-    margin-bottom: 12px;
-    padding-left: 12px;
-    border-left: 2px solid #c9a84c;
+    margin-bottom: 14px;
+    padding-left: 14px;
+    border-left: 3px solid #f5e6b8;
+    text-shadow: 0 0 12px rgba(0, 20, 40, 0.6);
+    opacity: 0.95;
 }
 
 /* ===== ФУТЕР ===== */
 .footer {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid rgba(201,168,76,0.1);
+    border-top: 1px solid rgba(201,168,76,0.2);
     text-align: center;
 }
+
 .footer p {
-    font-size: 13px;
-    color: #d4c8b0;
-    margin: 3px 0;
-}
-.footer .year {
-    font-size: 11px;
-    color: #a09078;
+    font-size: 14px;
+    color: #f5e6b8;
+    margin: 4px 0;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.3);
+    font-weight: 400;
+    letter-spacing: 0.3px;
 }
 
-/* ===== АДАПТИВ ===== */
-@media (max-width: 900px) {
-    .main-grid {
-        grid-template-columns: 1fr;
-    }
-    .legend-grid {
-        grid-template-columns: 1fr;
-    }
-    .simple-input-area {
-        flex-direction: column;
-    }
-    .simple-input-area .add-btn {
-        width: 100%;
-    }
-    .simple-result {
-        flex-direction: column;
-        gap: 8px;
-    }
-}
-@media (max-width: 500px) {
-    .header h1 {
-        font-size: 30px;
-    }
-    .motto h2 {
-        font-size: 20px;
-    }
-    .left-panel, .right-panel {
-        padding: 18px;
-    }
-    .spec-item {
-        flex-wrap: wrap;
-    }
-    .spec-label {
-        min-width: 100%;
-    }
-    .grade-item {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+.footer .year {
+    font-size: 13px;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(201, 168, 76, 0.4), 0 0 40px rgba(0, 0, 0, 0.3);
+    font-weight: 300;
+    letter-spacing: 2px;
+    opacity: 0.9;
 }
